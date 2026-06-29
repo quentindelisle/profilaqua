@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Profil aquatique 🌊 – Es-tu à l'aise dans l'eau ?</title>
+  <meta name="description" content="Profil aquatique – Découvre ta relation avec l'eau et teste ton niveau d'aquaphobie ou de thalassophobie en 12 questions.">
+
+  <!-- ─── PWA Manifest ───────────────────────────────────────── -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- ─── Thème & couleur ────────────────────────────────────── -->
+  <meta name="theme-color" content="#03045e">
+  <meta name="background-color" content="#03045e">
+
+  <!-- ─── iOS / iPadOS (Apple) ───────────────────────────────── -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Profil Aquatique">
+  <!-- Apple Touch Icons – toutes tailles -->
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="57x57"   href="icons/apple-touch-icon-57.png">
+  <link rel="apple-touch-icon" sizes="60x60"   href="icons/apple-touch-icon-60.png">
+  <link rel="apple-touch-icon" sizes="72x72"   href="icons/apple-touch-icon-72.png">
+  <link rel="apple-touch-icon" sizes="76x76"   href="icons/apple-touch-icon-76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="icons/apple-touch-icon-114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="icons/apple-touch-icon-120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="icons/apple-touch-icon-144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-touch-icon-152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/apple-touch-icon-167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180.png">
+
+  <!-- ─── Android / Chrome (PWA) ─────────────────────────────── -->
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- ─── Windows / Microsoft Edge ───────────────────────────── -->
+  <meta name="msapplication-TileImage" content="icons/mstile-150.png">
+  <meta name="msapplication-TileColor" content="#03045e">
+  <meta name="msapplication-config" content="browserconfig.xml">
+
+  <!-- ─── Favicon standard ───────────────────────────────────── -->
+  <link rel="icon" type="image/x-icon"  href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+  <!-- ─── Open Graph (partage réseaux sociaux) ───────────────── -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Profil aquatique 🌊">
+  <meta property="og:description" content="Es-tu à l'aise dans l'eau ? Découvre ton profil aquatique en 12 questions !">
+  <meta property="og:image"       content="icons/icon-512.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="twitter:title"      content="Profil aquatique 🌊">
+  <meta name="twitter:description" content="Es-tu à l'aise dans l'eau ? Découvre ton profil aquatique en 12 questions !">
+  <meta name="twitter:image"      content="icons/icon-512.png">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1a6b8a; --accent: #00b4d8; --light: #90e0ef;
+      --deep: #03045e; --ocean: #0077b6; --warm: #ff6b9d;
+      --card-bg: rgba(255,255,255,0.95); --text-dark: #0d1b2a; --text-mid: #1a3a4a;
+    }
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(160deg, #03045e 0%, #0077b6 45%, #00b4d8 100%);
+      color: var(--text-dark);
+      display: flex; flex-direction: column; align-items: center;
+      overflow-x: hidden;
+    }
+    .wave-top { position: fixed; top: 0; left: 0; width: 100%; z-index: 0; line-height: 0; pointer-events: none; }
+    .wave-bottom { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 0; line-height: 0; pointer-events: none; transform: scaleY(-1); }
+    .wave-top svg, .wave-bottom svg { width: 100%; display: block; }
+    .screen {
+      position: relative; z-index: 1; width: 100%; max-width: 680px;
+      padding: 20px 16px 100px; display: none;
+      animation: fadeSlide 0.45s ease both;
+    }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-card {
+      background: var(--card-bg); border-radius: 28px;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.28), 0 0 0 2px rgba(255,255,255,0.25);
+      padding: 32px 24px 28px; text-align: center; width: 100%; margin-top: 28px;
+    }
+    .hero-emoji { font-size: 64px; margin-bottom: 10px; }
+    .hero-title { font-size: clamp(26px,6vw,38px); font-weight: 900; color: var(--deep); margin-bottom: 10px; }
+    .hero-sub { font-size: clamp(14px,3.5vw,17px); color: var(--text-mid); line-height: 1.6; margin-bottom: 20px; }
+    .info-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
+    .chip { background: linear-gradient(135deg,var(--accent),var(--ocean)); color:#fff; border-radius:50px; padding:6px 16px; font-size:13px; font-weight:700; }
+    .start-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #ff6b9d, #ff8fab); color: #fff;
+      font-size: clamp(18px,4.5vw,22px); font-weight: 900;
+      border: none; border-radius: 50px; padding: 16px 36px; cursor: pointer;
+      box-shadow: 0 6px 28px rgba(255,107,157,0.55);
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .start-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 36px rgba(255,107,157,0.7); }
+    .start-btn:active { transform: translateY(0) scale(0.98); }
+    .fun-note { margin-top: 16px; font-size: 13px; color: #4a6a7a; font-style: italic; }
+    .progress-wrap { width: 100%; margin-bottom: 18px; display: none; }
+    .progress-wrap.active { display: block; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .progress-track { background: rgba(255,255,255,0.2); border-radius: 50px; height: 14px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg,var(--warm),var(--accent)); transition: width 0.5s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+    .quiz-card {
+      background: var(--card-bg); border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25); padding: 28px 22px; width: 100%;
+    }
+    .question-counter { font-size: 12px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+    .question-emoji { font-size: 40px; margin-bottom: 10px; }
+    .question-text { font-size: clamp(16px,4vw,20px); font-weight: 800; color: var(--deep); margin-bottom: 18px; line-height: 1.4; }
+    .answers { display: flex; flex-direction: column; gap: 10px; }
+    .answer-btn {
+      display: flex; align-items: center; gap: 12px;
+      background: #f0f8ff; border: 2.5px solid #d0eaf5;
+      border-radius: 16px; padding: 13px 16px;
+      font-size: clamp(13px,3.2vw,15px); font-weight: 600; color: var(--text-dark);
+      cursor: pointer; text-align: left; width: 100%;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .answer-btn:hover { border-color: var(--accent); background: #e0f5fb; transform: translateX(4px); }
+    .answer-btn.selected { border-color: var(--ocean); background: linear-gradient(135deg,#e0f5fb,#cceeff); font-weight: 800; }
+    .answer-letter {
+      min-width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg,var(--accent),var(--ocean));
+      color: #fff; font-size: 13px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .nav-row { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+    .nav-btn { padding: 11px 22px; border-radius: 50px; font-size: 15px; font-weight: 800; border: none; cursor: pointer; transition: transform 0.15s, opacity 0.15s; }
+    .nav-btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-back { background: #e8f9ff; color: var(--primary); border: 2px solid var(--light); }
+    .btn-next { background: linear-gradient(135deg,var(--primary),var(--ocean)); color: #fff; box-shadow: 0 4px 16px rgba(26,107,138,0.4); }
+    .btn-next:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
+    .results-wrap { width: 100%; }
+    .diag-card { background: var(--card-bg); border-radius: 28px; box-shadow: 0 14px 50px rgba(0,0,0,0.3); padding: 30px 22px; text-align: center; width: 100%; margin-bottom: 18px; }
+    .profile-badge { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg,var(--ocean),var(--accent)); border-radius: 50px; padding: 8px 22px; font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 14px; }
+    .score-emoji { font-size: 52px; margin-bottom: 8px; }
+    .profile-title { font-size: clamp(22px,5.5vw,30px); font-weight: 900; color: var(--deep); margin-bottom: 8px; }
+    .profile-desc { font-size: clamp(14px,3.5vw,16px); color: var(--text-mid); line-height: 1.6; max-width: 520px; margin: 0 auto 20px; }
+    .scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .score-bar { text-align: left; }
+    .score-bar-label { font-size: 12px; font-weight: 800; color: var(--primary); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+    .score-track { background: #e0f2f8; border-radius: 50px; height: 14px; overflow: hidden; margin-bottom: 4px; }
+    .score-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg,var(--accent),var(--warm)); transition: width 1.2s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+    .score-pct { font-size: 13px; font-weight: 900; color: var(--text-mid); }
+    .teacher-box { background: linear-gradient(135deg,#fff8e1,#fff3cd); border: 2.5px solid #ffc107; border-radius: 22px; padding: 22px 18px; width: 100%; margin-bottom: 16px; text-align: center; }
+    .teacher-box-title { font-size: clamp(15px,3.5vw,17px); font-weight: 900; color: #7a5500; margin-bottom: 8px; }
+    .teacher-box-text { font-size: clamp(13px,3vw,15px); color: #6a4800; line-height: 1.55; margin-bottom: 14px; }
+    .teacher-contact-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg,#ff6b9d,#ff8fab); color: #fff;
+      font-size: 15px; font-weight: 900; border: none; border-radius: 50px;
+      padding: 12px 24px; cursor: pointer; text-decoration: none;
+      box-shadow: 0 4px 18px rgba(255,107,157,0.5);
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .teacher-contact-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 24px rgba(255,107,157,0.65); }
+    .retake-btn {
+      background: linear-gradient(135deg,var(--primary),var(--ocean)); color: #fff;
+      font-size: 16px; font-weight: 800; border: none; border-radius: 50px;
+      padding: 14px 30px; cursor: pointer; box-shadow: 0 4px 18px rgba(26,107,138,0.45);
+      transition: transform 0.15s; margin-top: 6px;
+    }
+    .retake-btn:hover { transform: translateY(-2px); }
+    @media (max-width: 480px) {
+      .scores-grid { grid-template-columns: 1fr; }
+      .hero-card { padding: 24px 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wave-top">
+  <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
+    <path fill="rgba(255,255,255,0.12)" d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,0 L0,0 Z"/>
+    <path fill="rgba(255,255,255,0.07)" d="M0,80 C360,20 720,100 1080,50 C1260,25 1380,70 1440,60 L1440,0 L0,0 Z"/>
+  </svg>
+</div>
+<div class="wave-bottom">
+  <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
+    <path fill="rgba(255,255,255,0.12)" d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,0 L0,0 Z"/>
+    <path fill="rgba(255,255,255,0.07)" d="M0,80 C360,20 720,100 1080,50 C1260,25 1380,70 1440,60 L1440,0 L0,0 Z"/>
+  </svg>
+</div>
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+  <div class="hero-card">
+    <div class="hero-emoji">🌊</div>
+    <h1 class="hero-title">Profil aquatique</h1>
+    <p class="hero-sub">
+      Es-tu vraiment à l'aise dans l'eau ? 🤔<br>
+      12 questions pour découvrir ton profil aquatique<br>
+      en moins de 5 minutes !
+    </p>
+    <div class="info-chips">
+      <span class="chip">🏊 12 questions</span>
+      <span class="chip">⚡ 5 minutes</span>
+      <span class="chip">🔒 100% privé</span>
+    </div>
+    <button class="start-btn" id="btn-start">
+      Commencer le test&nbsp;! 🎯 <span>→</span>
+    </button>
+    <p class="fun-note">Réponds honnêtement, il n'y a pas de bonne ou de mauvaise réponse 😊</p>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="screen-quiz" class="screen">
+  <div class="progress-wrap active" id="progress-wrap">
+    <div class="progress-label">
+      <span>Question <span id="q-num">1</span>/12</span>
+      <span id="q-theme"></span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+  <div class="quiz-card" id="quiz-card">
+    <div class="question-counter" id="q-counter"></div>
+    <div class="question-emoji" id="q-emoji"></div>
+    <div class="question-text" id="q-text"></div>
+    <div class="answers" id="q-answers"></div>
+    <div class="nav-row">
+      <button class="nav-btn btn-back" id="btn-back">← Précédent</button>
+      <button class="nav-btn btn-next" id="btn-next" disabled>Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="screen-results" class="screen">
+  <div class="results-wrap" id="results-content"></div>
+</div>
+
+<script>
+(function() {
+  var currentQ = 0;
+  var answers  = [];
+  var selected = -1;
+
+  var QUESTIONS = [
+    { emoji:"🏊", theme:"Piscine", text:"Quand tu arrives à la piscine...", options:[
+      {text:"Tu te sens bien et tu rentres directement dans l'eau ! 😄", score:0},
+      {text:"Tu hésites un peu mais tu te baignes assez vite.", score:1},
+      {text:"Tu restes sur le bord à regarder les autres un moment.", score:2},
+      {text:"Tu n'aimes vraiment pas y aller, c'est trop stressant.", score:3}
+    ]},
+    { emoji:"💧", theme:"Tête sous l'eau", text:"Si on te demande de mettre la tête sous l'eau...", options:[
+      {text:"Pas de souci, tu le fais naturellement ! 🌟", score:0},
+      {text:"Tu le fais mais ça te met un peu mal à l'aise.", score:1},
+      {text:"Tu refuses ou tu trembles beaucoup.", score:2},
+      {text:"Penser à mettre la tête sous l'eau te terrifie. 💦", score:3}
+    ]},
+    { emoji:"🌊", theme:"Profondeurs", text:"En marchant vers le grand bain (2 mètres et +)...", options:[
+      {text:"Tu n'y penses même pas, tu n'as pas peur de la profondeur ! 🏄", score:0},
+      {text:"Tu vérifies que tu peux toujours toucher le fond.", score:1},
+      {text:"Ton cœur s'accélère un peu.", score:2},
+      {text:"Tes jambes se figent, c'est trop profond ! 😰", score:3}
+    ]},
+    { emoji:"💓", theme:"Réactions corpo", text:"Quand tu es dans l'eau, ton corps...", options:[
+      {text:"Est détendu, tu profites ! 😌", score:0},
+      {text:"Tu trembles légèrement des jambes.", score:1},
+      {text:"Tu as le cœur qui bat vite et tu frissonnes.", score:2},
+      {text:"Tu paniques, tu as du mal à respirer.", score:3}
+    ]},
+    { emoji:"🐙", theme:"Images marines", text:"Quand tu vois des images de fond marin profond ou de créatures marines...", options:[
+      {text:"Ça te fascine, tu trouves ça magnifique ! 🐠", score:0},
+      {text:"C'est un peu impressionnant mais pas stressant.", score:1},
+      {text:"Ça te met mal à l'aise.", score:2},
+      {text:"Tu ne peux pas regarder, ça te terrifie. 😱", score:3}
+    ]},
+    { emoji:"🎓", theme:"Cours de natation", text:"Pendant un cours de natation en EPS...", options:[
+      {text:"Tu es à l'aise et tu suis les exercices sans problème.", score:0},
+      {text:"Tu fais les exercices mais avec un peu d'appréhension.", score:1},
+      {text:"Tu évites certains exercices ou tu restes au bord.", score:2},
+      {text:"Tu refuses de rentrer dans l'eau ou tu paniques.", score:3}
+    ]},
+    { emoji:"🏖️", theme:"Plage", text:"À la plage, face à la mer...", options:[
+      {text:"Tu cours vers l'eau sans hésiter ! 🌊", score:0},
+      {text:"Tu entres progressivement mais tu profites.", score:1},
+      {text:"Tu restes dans le sable ou tu n'entres que jusqu'aux genoux.", score:2},
+      {text:"Tu ne peux pas t'approcher de l'eau, ça t'angoisse.", score:3}
+    ]},
+    { emoji:"🎬", theme:"Films", text:"Dans un film avec des scènes sous-marines ou de pleine mer...", options:[
+      {text:"Tu trouves ça beau et captivant.", score:0},
+      {text:"Certaines scènes te mettent un peu mal à l'aise.", score:1},
+      {text:"Tu détournes les yeux ou tu te crispes.", score:2},
+      {text:"Tu ne peux pas regarder ce type de film.", score:3}
+    ]},
+    { emoji:"🌙", theme:"Eau sombre", text:"Si tu devais nager dans une eau sombre (lac, mer la nuit)...", options:[
+      {text:"Pas de problème, c'est une aventure ! 🌟", score:0},
+      {text:"Un peu d'hésitation mais tu le ferais.", score:1},
+      {text:"Tu refuserais sauf en cas de nécessité.", score:2},
+      {text:"Hors de question, rien que d'y penser tu paniques.", score:3}
+    ]},
+    { emoji:"🤿", theme:"Plongée", text:"Si on te proposait de faire de la plongée sous-marine...", options:[
+      {text:"Super idée, tu adorerais ça ! 🐠", score:0},
+      {text:"Pourquoi pas, avec un peu d'entraînement.", score:1},
+      {text:"Non merci, ce n'est vraiment pas pour toi.", score:2},
+      {text:"Jamais, l'idée seule te donne de l'anxiété.", score:3}
+    ]},
+    { emoji:"🏞️", theme:"Eau libre", text:"Nager en eau libre (rivière, lac, mer) par rapport à la piscine...", options:[
+      {text:"Tu préfères même l'eau libre, c'est plus naturel !", score:0},
+      {text:"C'est un peu moins rassurant mais tu le fais.", score:1},
+      {text:"Tu évites l'eau libre autant que possible.", score:2},
+      {text:"L'eau libre te terrifie bien plus que la piscine.", score:3}
+    ]},
+    { emoji:"💭", theme:"Ressenti global", text:"En résumé, comment décrirais-tu ta relation avec l'eau ?", options:[
+      {text:"L'eau est mon amie, j'adore ça ! 💙", score:0},
+      {text:"J'aime l'eau mais j'ai parfois des appréhensions.", score:1},
+      {text:"L'eau me stresse souvent, je l'évite si possible.", score:2},
+      {text:"J'ai une vraie peur de l'eau, ça gêne ma vie.", score:3}
+    ]}
+  ];
+
+  var PROFILES = [
+    { emoji:"🐬", label:"Nageur(euse) serein(e)",
+      desc:"Tu es super à l'aise dans l'eau ! L'eau est ton alliée et pas une ennemie. Tu profites pleinement de chaque baignade sans stress ni appréhension !"},
+    { emoji:"🌊", label:"Baigneur(euse) prudent(e)",
+      desc:"Tu aimes l'eau mais tu restes vigilant(e). C'est tout à fait normal et raisonnable ! Quelques petites appréhensions par-ci par-là, mais rien qui t'empêche de nager et de t'amuser. Tu es sur la bonne voie !"},
+    { emoji:"💧", label:"Signes d'aquaphobie",
+      desc:"Il semble que l'eau en général te stresse un peu. Pas de panique : c'est quelque chose qu'on peut améliorer avec le temps, de petites expositions positives et l'aide d'un(e) professeur(e) d'EPS. Tu n'es pas seul(e) !"},
+    { emoji:"🌑", label:"Aquaphobie marquée",
+      desc:"L'eau te fait vraiment peur, et ça peut compliquer certaines activités. Mais bonne nouvelle : il existe des solutions pour aller mieux, comme la vidéo 360° ! Parle-en à ton(ta) professeur(e) d'EPS. 💪"},
+    { emoji:"🦈", label:"Phobie mixte (aquaphobie + thalassophobie)",
+      desc:"Tu ressens de la peur à la fois face à l'eau en général ET face aux grandes étendues marines. Des outils comme la vidéo 360° peuvent t'aider à reprendre confiance progressivement. 🌟"}
+  ];
+
+  var THEME_ICONS = {
+    "Piscine":"🏊","Tête sous l'eau":"💧","Profondeurs":"🌊",
+    "Réactions corpo":"💓","Images marines":"🐙","Cours de natation":"🎓",
+    "Plage":"🏖️","Films":"🎬","Eau sombre":"🌙","Plongée":"🤿",
+    "Eau libre":"🏞️","Ressenti global":"💭"
+  };
+
+  function showScreen(id) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) {
+      screens[i].classList.remove('active');
+    }
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startTest() {
+    currentQ = 0;
+    answers  = [];
+    selected = -1;
+    showScreen('screen-quiz');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    var q = QUESTIONS[currentQ];
+    var prog = document.getElementById('progress-fill');
+    if (prog) { prog.style.width = ((currentQ + 1) / QUESTIONS.length * 100) + '%'; }
+
+    document.getElementById('q-num').textContent   = currentQ + 1;
+    document.getElementById('q-theme').textContent = (THEME_ICONS[q.theme] || '') + ' ' + q.theme;
+    document.getElementById('q-counter').textContent = 'QUESTION ' + (currentQ + 1) + '/12';
+    document.getElementById('q-emoji').textContent = q.emoji;
+    document.getElementById('q-text').textContent  = q.text;
+
+    var container = document.getElementById('q-answers');
+    container.innerHTML = '';
+    var letters = ['A','B','C','D'];
+    for (var i = 0; i < q.options.length; i++) {
+      (function(idx) {
+        var btn = document.createElement('button');
+        btn.className = 'answer-btn' + (selected === idx ? ' selected' : '');
+        btn.onclick = function() { selectAnswer(idx); };
+        var span = document.createElement('span');
+        span.className = 'answer-letter';
+        span.textContent = letters[idx];
+        btn.appendChild(span);
+        btn.appendChild(document.createTextNode(q.options[idx].text));
+        container.appendChild(btn);
+      })(i);
+    }
+
+    document.getElementById('btn-back').disabled = (currentQ === 0);
+    document.getElementById('btn-next').disabled = (selected === -1);
+  }
+
+  function selectAnswer(idx) {
+    selected = idx;
+    var btns = document.querySelectorAll('.answer-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('selected', i === idx);
+    }
+    document.getElementById('btn-next').disabled = false;
+  }
+
+  function nextQuestion() {
+    answers[currentQ] = selected;
+    selected = -1;
+    if (currentQ < QUESTIONS.length - 1) {
+      currentQ++;
+      selected = (answers[currentQ] !== undefined) ? answers[currentQ] : -1;
+      renderQuestion();
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      selected = (answers[currentQ] !== undefined) ? answers[currentQ] : -1;
+      renderQuestion();
+    }
+  }
+
+  function showResults() {
+    var aqua = 0, thala = 0;
+    for (var i = 0; i < answers.length; i++) {
+      var s = QUESTIONS[i].options[answers[i]].score;
+      if (i < 6) { aqua += s; } else { thala += s; }
+    }
+    var aquaPct  = Math.min(100, Math.round(aqua  / 18 * 100));
+    var thalaPct = Math.min(100, Math.round(thala / 18 * 100));
+
+    var aquaLevel  = aquaPct  < 33 ? 0 : aquaPct  < 66 ? 1 : aquaPct  < 83 ? 2 : 3;
+    var thalaLevel = thalaPct < 33 ? 0 : thalaPct < 66 ? 1 : thalaPct < 83 ? 2 : 3;
+
+    var pidx;
+    if      (aquaLevel <= 1 && thalaLevel <= 1) { pidx = 0; }
+    else if (aquaLevel >= 2 && thalaLevel <= 1) { pidx = 1; }
+    else if (aquaLevel >= 2 && thalaLevel <= 2) { pidx = 2; }
+    else if (aquaLevel >= 3 || thalaLevel >= 3) { pidx = 3; }
+    else                                        { pidx = 4; }
+
+    var prof = PROFILES[pidx];
+
+    var html = '<div class="diag-card">';
+    html += '<div class="profile-badge">' + prof.emoji + ' ' + prof.label + '</div>';
+    html += '<div class="score-emoji">' + prof.emoji + '</div>';
+    html += '<h2 class="profile-title">' + prof.label + '</h2>';
+    html += '<p class="profile-desc">' + prof.desc + '</p>';
+    html += '<div class="scores-grid">';
+    html += '<div class="score-bar"><div class="score-bar-label">🌊 Aquaphobie</div>';
+    html += '<div class="score-track"><div class="score-fill" id="bar-aqua" style="width:0%"></div></div>';
+    html += '<div class="score-pct">' + aquaPct + '%</div></div>';
+    html += '<div class="score-bar"><div class="score-bar-label">🐙 Thalassophobie</div>';
+    html += '<div class="score-track"><div class="score-fill" id="bar-thala" style="width:0%"></div></div>';
+    html += '<div class="score-pct">' + thalaPct + '%</div></div>';
+    html += '</div></div>';
+
+    html += '<div class="teacher-box">';
+    html += '<div class="teacher-box-title">💡 Une solution pour les élèves aquaphobes</div>';
+    html += '<p class="teacher-box-text">Le GIPTIC EPS Paris propose des <strong>expériences immersives en vidéo 360°</strong> pour aider les élèves aquaphobes et/ou thalassophobes à se réconcilier avec l\'eau. Prêt de casque VR disponible sur demande pour vos séances de natation en EPS ou à l\'AS !</p>';
+    html += '<a class="teacher-contact-btn" href="mailto:sophie.cheyrou@ac-paris.fr?subject=Dossier%20pr%C3%AAt%20de%20casque%20VR%20-%20AquaTest&body=Bonjour%20Sophie%2C%0A%0AJe%20suis%20professeur(e)%20d%27EPS%20et%20je%20souhaiterais%20emprunter%20un%20casque%20de%20r%C3%A9alit%C3%A9%20virtuelle.%0A%0AMerci%20!">📧 Contacter Sophie pour emprunter un casque VR</a>';
+    html += '</div>';
+
+    html += '<button class="retake-btn" id="btn-retake">🔄 Recommencer le test</button>';
+
+    document.getElementById('results-content').innerHTML = html;
+    showScreen('screen-results');
+
+    setTimeout(function() {
+      var ba = document.getElementById('bar-aqua');
+      var bt = document.getElementById('bar-thala');
+      if (ba) { ba.style.width = aquaPct + '%'; }
+      if (bt) { bt.style.width = thalaPct + '%'; }
+    }, 150);
+
+    document.getElementById('btn-retake').addEventListener('click', function() {
+      showScreen('screen-home');
+    });
+  }
+
+  // Wire up buttons after DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btn-start').addEventListener('click', startTest);
+    document.getElementById('btn-back').addEventListener('click', prevQuestion);
+    document.getElementById('btn-next').addEventListener('click', nextQuestion);
+  });
+
+})();
+</script>
+
+  <!-- ─── Service Worker (PWA offline) ──────────────────────── -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('./sw.js')
+          .then(function(reg) { console.log('SW enregistré :', reg.scope); })
+          .catch(function(err) { console.warn('SW échec :', err); });
+      });
+    }
+  </script>
+</body>
+</html>
